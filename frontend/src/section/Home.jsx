@@ -3,8 +3,9 @@ import heroimg from '../assets/heroimg.png'
 import backgroundImage from '../assets/homeimg.webp'
 import {motion} from 'framer-motion'
 import { slideUpVariants,zoomInVariants } from './animation'
+import { Link } from 'react-scroll' 
 
-const Hero = () => {
+const Home = () => {
   return (
         <div id = 'home' className='bg-black w-full lg:h-[700px] h-fit m-auto pt-[60px] 
         lg:pt-[0px] lg:px-[150px] px-[20px] flex justify-between items-center lg:flex-row 
@@ -29,10 +30,11 @@ const Hero = () => {
                     rounded-lg text-black font-bold'>
                         READ MORE
                     </motion.button>
-                    <motion.button variants={zoomInVariants} className='border-white hover:border-yellow-500 hover:text-yellow-500 
-                    border-2 px-10 py-3 rounded-lg text-white font-bold '>
+                    <Link to="contact" spy={true} smooth={true} offset={-100} duration={500}>
+                    <motion.button variants={zoomInVariants} className='border-white hover:border-yellow-500 hover:text-yellow-500 border-2 px-10 py-3 rounded-lg text-white font-bold '>
                         REACH US
                     </motion.button>
+                        </Link>
                 </motion.div>
         </motion.div>
         <div className='w-[40%] flex flex-col justify-end items-end'>
@@ -44,4 +46,4 @@ const Hero = () => {
   )
 }
 
-export default Hero
+export default Home

@@ -8,7 +8,7 @@ const Footer = () => {
     <>
       <div className='bg-black text-white flex justify-center items-center gap-2 p-5'>
         <FaCopyright className='fill-yellow-500 lg:size-5 size-8'/>
-        <p className='text-lg text-center'>Copyright 2025,AARA INFRAA,All Rights Reserved</p>
+        <p className='text-lg text-center'>Copyright 2025, AARA INFRAA. All Rights Reserved</p>
       </div>
       {/* scroll to top button*/}
       <div id='icon-box' className='bg-yellow-500 text-black p-3 rounded-full hover:bg-black

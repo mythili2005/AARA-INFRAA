@@ -30,6 +30,12 @@ const Header = () => {
     {
       link: 'Contact',path:'contact'
     },
+    {
+      link:'Sign Up',path:'signup'
+    },
+    {
+      link:'Log In',path:'login'
+    },
   ]
 
 
@@ -49,9 +55,12 @@ const Header = () => {
                 ))
             }
           </ul>
+          
+          <Link to="contact" spy={true} smooth={true} offset={-100} duration={500}>
           <button className='bg-yellow-500 hover:bg-black hover:text-white text-black px-10
           py-3 rounded-full font-semibold transform hover:scale-105 transition-transform duration-300
           cursor-pointer md:flex hidden'>REACH US</button>
+          </Link>
           {/* mobile menu starts here*/}
           <div className='flex justify-between items-center lg:hidden mt-3 ' onClick={toggleMenu}>
             <div>
