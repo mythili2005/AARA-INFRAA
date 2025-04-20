@@ -65,11 +65,12 @@ const Contact = () => {
             variants={slideUpVariants}
             className="text-black uppercase text-[40px] font-bold"
           >
-            REACH US FOR ANY QUERY
+            feel free to reach out!
           </motion.h1>
           <div className="w-[120px] h-[6px] bg-yellow-500"></div>
           <p className="text-3xl italic text-gray-600 mt-[60px]">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam, officia!
+          We value communication and transparency. Whether you have an inquiry or need support 
+          regarding our sliding window construction services for public water purifiers.
           </p>
         </motion.div>
 
