@@ -3,7 +3,9 @@ import heroimg from '../assets/heroimg.png'
 import backgroundImage from '../assets/homeimg.webp'
 import {motion} from 'framer-motion'
 import { slideUpVariants,zoomInVariants } from './animation'
-import { Link } from 'react-scroll' 
+//import { Link } from 'react-scroll' 
+import { Link } from 'react-router-dom';
+
 
 const Home = () => {
     
@@ -33,7 +35,7 @@ const Home = () => {
                         READ MORE
                     </motion.button>
                     </Link>
-                    <Link to="contact" spy={true} smooth={true} offset={-100} duration={500}>
+                    <Link to="/contact" spy={true} smooth={true} offset={-100} duration={500}>
                     <motion.button variants={zoomInVariants} className='border-white hover:border-yellow-500 hover:text-yellow-500 border-2 px-10 py-3 rounded-lg text-white font-bold '>
                         REACH US
                     </motion.button>

@@ -1,7 +1,9 @@
 import React from 'react'
 import {motion} from 'framer-motion'
 import { slideUpVariants,zoomInVariants } from './animation'
-import { Link } from 'react-scroll' 
+//import { Link } from 'react-scroll' 
+import { Link } from 'react-router-dom';
+
 
 const About = () => {
   return (
@@ -30,7 +32,7 @@ const About = () => {
                 <br />
                 Whether it's for public parks, bus stations, or any other public space, AARA INFRAA is here to provide reliable, secure, and innovative solutions.
             </p>
-             <Link to='projects' spy={true} smooth={true} offset={-1} duration={500}>
+             <Link to='/services' spy={true} smooth={true} offset={-1} duration={500}>
             <motion.button variants={zoomInVariants} className='bg-yellow-500 hover:bg-white hover:text-black px-10
             py-3 rounded-lg font-bold text-black'>
                 LEARN MORE
