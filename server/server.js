@@ -15,14 +15,10 @@ app.use(express.json());
 
 // Route files
 app.use('/api/contact', contactRoutes);
-<<<<<<< HEAD
 app.use('/api/auth', authRoutes); // Auth routes
 app.use("/api/dealership", dealershipRoutes);
 app.use("/api/products", productsRoutes);
-=======
 app.use('/api/auth', authRoutes);
->>>>>>> ab356e74bf3ec7f02213c25a638a6c4efc620855
-
 let otpStore = {};  // Temporary store for OTPs (you can use a DB in production)
 
 // Setup nodemailer transporter
