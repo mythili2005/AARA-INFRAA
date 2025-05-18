@@ -1,0 +1,6 @@
+# Ignore .env file in the server folder
+server/.env
+
+# Optional: Ignore node_modules and logs
+node_modules/
+*.log

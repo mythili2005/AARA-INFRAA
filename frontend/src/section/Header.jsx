@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { FaTimes, FaBars } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [user, setUser] = useState(null);
+  const navigate = useNavigate();
 
   // Toggle the mobile menu
   const toggleMenu = () => {
@@ -21,7 +22,6 @@ const Header = () => {
     const storedUser = localStorage.getItem('user');
     if (storedUser) {
       try {
-        // Parse only if the stored data is valid
         const parsedUser = JSON.parse(storedUser);
         setUser(parsedUser);
       } catch (error) {
@@ -35,6 +35,7 @@ const Header = () => {
   const handleLogout = () => {
     localStorage.removeItem('user');
     setUser(null); // Reset user state
+    navigate('/'); // Redirect to homepage or login page after logout
   };
 
   const navItem = [
