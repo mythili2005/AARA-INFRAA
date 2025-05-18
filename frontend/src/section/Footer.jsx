@@ -13,7 +13,7 @@ const Footer = () => {
       {/* scroll to top button*/}
       <div id='icon-box' className='bg-yellow-500 text-black p-3 rounded-full hover:bg-black
       hover:text-white cursor-pointer fixed lg:bottom-6 right-6 bottom-6'> 
-      <Link to='home' spy={true} offset={-100} smooth={true}><FaArrowUp className='size-6'/></Link>
+      <Link to='header' spy={true} offset={-600} smooth={true}><FaArrowUp className='size-6'/></Link>
       </div>
     </>
   )

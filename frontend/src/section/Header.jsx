@@ -44,11 +44,13 @@ const Header = () => {
     { link: 'Portfolio', path: '/portfolio' },
     { link: 'Working', path: '/working' },
     { link: 'Testimonials', path: '/testimonials' },
+    { link: 'Dealer Contact', path: '/dealership'},
+    { link: 'Products', path: '/product'},
     { link: 'Contact', path: '/contact' },
   ];
 
   return (
-    <nav className="w-full flex bg-white justify-between items-center gap-1 lg:px-16 px-6 py-4 sticky top-0 z-50">
+    <nav id = 'header' className="w-full flex bg-white justify-between items-center gap-1 lg:px-16 px-6 py-4 sticky top-0 z-50">
       <h1 className="text-black md:text-4xl text-3xl font-bold font-rubik">
         AARA <span className="text-yellow-500">INFRAA</span>
       </h1>

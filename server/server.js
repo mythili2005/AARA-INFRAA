@@ -2,9 +2,10 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 require('dotenv').config();
-
 const contactRoutes = require('./routes/contact');
 const authRoutes = require('./routes/auth');
+const dealershipRoutes = require("./routes/dealership");
+const productsRoutes = require("./routes/products");
 
 const app = express();
 app.use(cors());
@@ -12,6 +13,8 @@ app.use(express.json());
 
 app.use('/api/contact', contactRoutes);
 app.use('/api/auth', authRoutes); // Auth routes
+app.use("/api/dealership", dealershipRoutes);
+app.use("/api/products", productsRoutes);
 
 mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
