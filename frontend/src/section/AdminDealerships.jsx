@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+import { slideUpVariants, zoomInVariants } from './animation';
 
 const AdminDealership = () => {
   const [requests, setRequests] = useState([]);
   const [replyContent, setReplyContent] = useState({});
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     fetch("http://localhost:5000/api/dealership/all")
@@ -27,6 +30,7 @@ const AdminDealership = () => {
       return;
     }
 
+    setLoading(true);
     try {
       const res = await fetch("http://localhost:5000/api/dealership/reply", {
         method: "POST",
@@ -36,7 +40,7 @@ const AdminDealership = () => {
 
       if (res.ok) {
         alert("Reply sent!");
-        setReplyContent((prev) => ({ ...prev, [email]: "" })); // clear textarea
+        setReplyContent((prev) => ({ ...prev, [email]: "" }));
       } else {
         alert("Failed to send reply");
       }
@@ -44,69 +48,77 @@ const AdminDealership = () => {
       alert("Error sending reply");
       console.error(err);
     }
+    setLoading(false);
   };
 
   return (
-    <div className="p-4 max-w-4xl mx-auto">
-      <h1 className="text-3xl font-bold mb-6">Dealership Requests</h1>
+    <div className="bg-white w-full min-h-screen">
+      <div className="lg:w-[80%] w-[90%] m-auto py-[60px]">
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          variants={slideUpVariants}
+          className="mb-12"
+        >
+          <h1 className="text-yellow-500 text-2xl">ADMIN PANEL</h1>
+          <h2 className="text-black uppercase text-[40px] font-bold">Dealership Requests</h2>
+          <div className="w-[120px] h-[6px] bg-yellow-500 mb-8"></div>
+        </motion.div>
 
-      {requests.length === 0 ? (
-        <p>No requests found.</p>
-      ) : (
-        requests.map((req) => (
-          <div
-            key={req._id}
-            className="border rounded-lg p-4 mb-4 shadow-md bg-white"
-          >
-            <p>
-              <strong>Name:</strong> {req.name}
-            </p>
-            <p>
-              <strong>Email:</strong> {req.email}
-            </p>
-            <p>
-              <strong>Phone:</strong> {req.phone}
-            </p>
-            <p>
-              <strong>Company:</strong> {req.companyName}
-            </p>
-            <p>
-              <strong>Address:</strong> {req.address}
-            </p>
-            <p>
-              <strong>Location:</strong> {req.location}
-            </p>
+        {requests.length === 0 ? (
+          <p className="text-xl text-gray-600">No requests found.</p>
+        ) : (
+          <div className="space-y-6">
+            {requests.map((req) => (
+              <motion.div
+                key={req._id}
+                variants={zoomInVariants}
+                className="border-[2px] border-black rounded-xl p-6"
+              >
+                <div className="grid md:grid-cols-2 grid-cols-1 gap-4 mb-4">
+                  <div>
+                    <p><span className="font-bold">Name:</span> {req.name}</p>
+                    <p><span className="font-bold">Email:</span> {req.email}</p>
+                    <p><span className="font-bold">Phone:</span> {req.phone}</p>
+                  </div>
+                  <div>
+                    <p><span className="font-bold">Company:</span> {req.companyName}</p>
+                    <p><span className="font-bold">Address:</span> {req.address}</p>
+                    <p><span className="font-bold">Location:</span> {req.location}</p>
+                  </div>
+                </div>
 
-            {req.businessLicense && (
-              <p>
-                <a
-                  href={`http://localhost:5000/uploads/${req.businessLicense}`}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="text-blue-600 underline"
+                {req.businessLicense && (
+                  <a 
+                    href={`http://localhost:5000/uploads/${req.businessLicense}`}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="text-yellow-500 hover:underline mb-4 inline-block"
+                  >
+                    View Business License
+                  </a>
+                )}
+
+                <textarea
+                  rows={3}
+                  value={replyContent[req.email] || ""}
+                  onChange={(e) => handleReplyChange(req.email, e.target.value)}
+                  placeholder="Write your reply..."
+                  className="w-full px-4 py-2 border-[2px] border-black rounded-lg mb-4"
+                />
+
+                <button
+                  onClick={() => sendReply(req.email)}
+                  disabled={loading}
+                  className="bg-yellow-500 hover:bg-black hover:text-white px-6 py-2 rounded-lg font-bold transition-colors"
                 >
-                  View Business License
-                </a>
-              </p>
-            )}
-
-            <textarea
-              rows="3"
-              value={replyContent[req.email] || ""}
-              onChange={(e) => handleReplyChange(req.email, e.target.value)}
-              placeholder="Write reply..."
-              className="border mt-2 p-2 w-full"
-            />
-
-            <button
-              onClick={() => sendReply(req.email)}
-              className="mt-2 px-4 py-2 bg-yellow-500 text-black font-bold rounded hover:bg-black hover:text-white"
-            >
-              Send Reply
-            </button>
+                  {loading ? "Sending..." : "Send Reply"}
+                </button>
+              </motion.div>
+            ))}
           </div>
-        ))
-      )}
+        )}
+      </div>
     </div>
   );
 };

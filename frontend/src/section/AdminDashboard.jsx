@@ -1,41 +1,54 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
+import { slideUpVariants, zoomInVariants } from './animation';
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
 
-  const cards = [
-    {
-      title: "Manage Dealership Requests",
-      description: "View and manage all dealership inquiries.",
-      link: "/admin-dealerships",
-    },
-    {
-      title: "Manage Contact Submissions",
-      description: "Review messages from users via contact form.",
-      link: "/admin-contacts",
-    },
-    {
-      title: "Product CRUD Operations",
-      description: "Add, update, or delete products on the site.",
-      link: "/admin-products",
-    },
-  ];
-
   return (
-    <div className="p-6">
-      <h1 className="text-3xl font-bold mb-6">Admin Dashboard</h1>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-        {cards.map((card, index) => (
-          <div
-            key={index}
-            className="border rounded-xl shadow-md p-5 cursor-pointer hover:shadow-lg transition"
-            onClick={() => navigate(card.link)}
-          >
-            <h2 className="text-xl font-semibold mb-2">{card.title}</h2>
-            <p className="text-gray-600">{card.description}</p>
-          </div>
-        ))}
+    <div className="bg-white w-full min-h-screen p-[60px]">
+      <div className="lg:w-[80%] w-[90%] m-auto">
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          variants={slideUpVariants}
+          className="mb-12"
+        >
+          <h1 className="text-yellow-500 text-2xl">ADMIN PANEL</h1>
+          <h2 className="text-black uppercase text-[40px] font-bold">Dashboard</h2>
+          <div className="w-[120px] h-[6px] bg-yellow-500 mb-8"></div>
+        </motion.div>
+
+        <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-6">
+          {[
+            {
+              title: "Manage Dealerships",
+              description: "View and respond to dealership applications",
+              link: "/admin-dealerships"
+            },
+            {
+              title: "Manage Contacts",
+              description: "Respond to customer inquiries",
+              link: "/admin-contacts"
+            },
+            {
+              title: "Manage Products",
+              description: "Update product listings",
+              link: "/admin-products"
+            }
+          ].map((card, index) => (
+            <motion.div
+              key={index}
+              variants={zoomInVariants}
+              className="border-[2px] border-black rounded-xl p-6 hover:bg-yellow-500 hover:text-black cursor-pointer transition"
+              onClick={() => navigate(card.link)}
+            >
+              <h3 className="text-xl font-bold mb-2">{card.title}</h3>
+              <p>{card.description}</p>
+            </motion.div>
+          ))}
+        </div>
       </div>
     </div>
   );
