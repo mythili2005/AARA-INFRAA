@@ -31,6 +31,8 @@ app.get('/list-uploads', (req, res) => {
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 
+
+
 // Route files
 app.use('/api/contact', contactRoutes);
 app.use('/api/auth', authRoutes); // Auth routes

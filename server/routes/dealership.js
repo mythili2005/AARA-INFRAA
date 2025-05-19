@@ -46,25 +46,6 @@ const transporter = nodemailer.createTransport({
     pass: process.env.EMAIL_PASS,
   },
 });
-
-async function fixBusinessLicensePaths() {
-  const requests = await DealershipRequest.find();
-  for (const req of requests) {
-    if (req.businessLicense && req.businessLicense.includes('\\')) {
-      // Extract filename from full path
-      const filename = req.businessLicense.split('\\').pop();
-      req.businessLicense = filename;
-      await req.save();
-      console.log(`Updated: ${req._id}`);
-    }
-  }
-  console.log('All done!');
-}
-
-fixBusinessLicensePaths()
-  .then(() => process.exit())
-  .catch(err => console.error(err));
-
 // Submit dealership request with file upload
 router.post("/submit", upload.single("businessLicense"), async (req, res) => {
   try {

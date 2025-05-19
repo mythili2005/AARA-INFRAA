@@ -7,7 +7,15 @@ const dealershipRequestSchema = new mongoose.Schema({
   companyName: String,
   address: String,          // new field you have in frontend
   location: String,
-  businessLicense: String},{ timestamps: true } // for storing uploaded file path
+  businessLicense: {
+  type: String,
+  validate: {
+    validator: function (v) {
+      return !v.includes('\\') && !v.includes('/');
+    },
+    message: 'Invalid path format for business license.'
+  }
+}},{ timestamps: true } // for storing uploaded file path
 );
 
 const DealershipRequest = mongoose.model('DealershipRequest', dealershipRequestSchema);
