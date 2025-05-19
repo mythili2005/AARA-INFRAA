@@ -1,14 +1,12 @@
 const mongoose = require('mongoose');
 
-const contactSchema = new mongoose.Schema({
-  fullname: String,
-  email: String,
-  mobile: String,
-  message: String,
-  date: {
-    type: Date,
-    default: Date.now,
-  },
-});
+const ContactSchema = new mongoose.Schema({
+  fullname: { type: String, required: true, trim: true },
+  email: { type: String, required: true, lowercase: true, trim: true },
+  mobile: { type: String, required: true, trim: true },
+  message: { type: String, required: true, trim: true },
+  reply: { type: String, default: '' },           // admin reply message
+  replied: { type: Boolean, default: false },     // reply status
+}, { timestamps: true });
 
-module.exports = mongoose.model('Contact', contactSchema);
+module.exports = mongoose.model('Contact', ContactSchema);

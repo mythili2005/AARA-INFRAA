@@ -3,23 +3,42 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const nodemailer = require('nodemailer');
 const crypto = require('crypto');
+const path = require('path');
 require('dotenv').config();
 const contactRoutes = require('./routes/contact');
 const authRoutes = require('./routes/auth');
 const dealershipRoutes = require("./routes/dealership");
 const productsRoutes = require("./routes/products");
+const fs = require('fs');
 
 const app = express();
+
+
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+
+app.get('/list-uploads', (req, res) => {
+  const uploadFolder = path.join(__dirname, 'uploads');
+  fs.readdir(uploadFolder, (err, files) => {
+    if (err) return res.status(500).json({ error: 'Unable to list files' });
+    res.json(files);
+  });
+});
+
+
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
 
 // Route files
 app.use('/api/contact', contactRoutes);
 app.use('/api/auth', authRoutes); // Auth routes
 app.use("/api/dealership", dealershipRoutes);
 app.use("/api/products", productsRoutes);
-app.use('/api/auth', authRoutes);
+
 let otpStore = {};  // Temporary store for OTPs (you can use a DB in production)
+
 
 // Setup nodemailer transporter
 const transporter = nodemailer.createTransport({

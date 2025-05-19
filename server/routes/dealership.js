@@ -2,13 +2,17 @@ const express = require("express");
 const router = express.Router();
 const multer = require("multer");
 const path = require("path");
-const fs = require("fs");
 const nodemailer = require("nodemailer");
 const DealershipRequest = require("../models/Dealership");
 require("dotenv").config();
 
-// Ensure uploads folder exists
+// Setup uploads directory
 const uploadDir = path.join(__dirname, "..", "uploads");
+
+
+
+// Ensure uploads folder exists
+const fs = require("fs");
 if (!fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir);
 }
@@ -22,9 +26,19 @@ const storage = multer.diskStorage({
     cb(null, Date.now() + path.extname(file.originalname));
   },
 });
-const upload = multer({ storage: storage });
 
-// Email transporter config
+const upload = multer({
+  storage,
+  fileFilter: (req, file, cb) => {
+    const allowedExt = [".pdf", ".jpg", ".jpeg", ".png"];
+    if (!allowedExt.includes(path.extname(file.originalname).toLowerCase())) {
+      return cb(new Error("Only PDF, JPG, JPEG, PNG files allowed"));
+    }
+    cb(null, true);
+  },
+});
+
+// Nodemailer transporter setup
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
@@ -33,19 +47,30 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-// POST /api/dealership/submit
-router.post("/submit", upload.single("businessLicense"), async (req, res) => {
-  const {
-    name,
-    email,
-    phone,
-    companyName,
-    address,
-    location,
-  } = req.body;
+async function fixBusinessLicensePaths() {
+  const requests = await DealershipRequest.find();
+  for (const req of requests) {
+    if (req.businessLicense && req.businessLicense.includes('\\')) {
+      // Extract filename from full path
+      const filename = req.businessLicense.split('\\').pop();
+      req.businessLicense = filename;
+      await req.save();
+      console.log(`Updated: ${req._id}`);
+    }
+  }
+  console.log('All done!');
+}
 
+fixBusinessLicensePaths()
+  .then(() => process.exit())
+  .catch(err => console.error(err));
+
+// Submit dealership request with file upload
+router.post("/submit", upload.single("businessLicense"), async (req, res) => {
   try {
-    const filePath = req.file ? req.file.path : "";
+    const { name, email, phone, companyName, address, location } = req.body;
+    const filePath = req.file ? req.file.filename : "";
+
 
     const newRequest = new DealershipRequest({
       name,
@@ -59,12 +84,13 @@ router.post("/submit", upload.single("businessLicense"), async (req, res) => {
 
     await newRequest.save();
 
+    // Send notification email with attachment
     const mailOptions = {
       from: process.env.EMAIL_USER,
       to: process.env.RECEIVER_EMAIL,
       subject: "New Dealership Request",
       html: `
-        <h2>Dealership Request</h2>
+        <h2>New Dealership Request</h2>
         <p><strong>Name:</strong> ${name}</p>
         <p><strong>Email:</strong> ${email}</p>
         <p><strong>Phone:</strong> ${phone}</p>
@@ -73,12 +99,7 @@ router.post("/submit", upload.single("businessLicense"), async (req, res) => {
         <p><strong>Location:</strong> ${location}</p>
       `,
       attachments: req.file
-        ? [
-            {
-              filename: req.file.originalname,
-              path: req.file.path,
-            },
-          ]
+        ? [{ filename: req.file.originalname, path: req.file.path }]
         : [],
     };
 
@@ -88,6 +109,38 @@ router.post("/submit", upload.single("businessLicense"), async (req, res) => {
   } catch (error) {
     console.error("Error in /submit:", error);
     res.status(500).json({ error: "Request failed!" });
+  }
+});
+
+// Get all dealership requests
+router.get("/all", async (req, res) => {
+  try {
+    const requests = await DealershipRequest.find().sort({ createdAt: -1 });
+    res.status(200).json(requests);
+  } catch (err) {
+    console.error("Error fetching requests:", err);
+    res.status(500).json({ error: "Error fetching dealership requests" });
+  }
+});
+
+// Admin sends reply email
+router.post("/reply", async (req, res) => {
+  try {
+    const { email, subject, message } = req.body;
+
+    const mailOptions = {
+      from: process.env.EMAIL_USER,
+      to: email,
+      subject,
+      text: message,
+    };
+
+    await transporter.sendMail(mailOptions);
+
+    res.status(200).json({ message: "Reply sent successfully" });
+  } catch (err) {
+    console.error("Reply error:", err);
+    res.status(500).json({ error: "Failed to send reply" });
   }
 });
 

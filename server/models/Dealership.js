@@ -7,8 +7,8 @@ const dealershipRequestSchema = new mongoose.Schema({
   companyName: String,
   address: String,          // new field you have in frontend
   location: String,
-  businessLicense: String,  // for storing uploaded file path
-});
+  businessLicense: String},{ timestamps: true } // for storing uploaded file path
+);
 
 const DealershipRequest = mongoose.model('DealershipRequest', dealershipRequestSchema);
 

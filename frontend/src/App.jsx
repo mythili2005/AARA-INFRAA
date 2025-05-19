@@ -12,11 +12,16 @@ import Footer from './section/Footer';
 import AuthPage from './section/AuthPage';
 import DealershipPage from "./section/DealershipForm";
 import ProductsPage from "./section/ProductList";
-
+import AdminLogin from './section/AdminLogin';
+import AdminDashboard from './section/AdminDashboard';
+import AdminDealerships from './section/AdminDealerships';
+import AdminContacts from './section/AdminContact';
+import AdminProducts from './section/AdminProducts';
 
 const App = () => {
   return (
     <Router>
+
       <Header />
       <Routes>
         <Route path="/" element={<Home />} />
@@ -29,7 +34,11 @@ const App = () => {
         <Route path="/products" element={<ProductsPage />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/authPage" element={<AuthPage />} />
-
+        <Route path="/admin-login" element={<AdminLogin />} />
+        <Route path="/admin-dashboard" element={<AdminDashboard />} />
+        <Route path="/admin-dealerships" element={<AdminDealerships />} />
+        <Route path="/admin-contacts" element={<AdminContacts />} />
+        <Route path="/admin-products" element={<AdminProducts />} />
       </Routes>
       <Footer />
     </Router>

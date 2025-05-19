@@ -215,13 +215,23 @@ const AuthPage = () => {
         )}
 
         <div className="mt-4 text-center">
-          <p className="text-black">
-            {isSignup ? 'Already have an account?' : "Don't have an account?"}{' '}
-            <span onClick={toggleForm} className="text-yellow-500 cursor-pointer underline">
-              {isSignup ? 'Login' : 'Sign up'}
-            </span>
-          </p>
-        </div>
+  <p className="text-black">
+    {isSignup ? 'Already have an account?' : "Don't have an account?"}{' '}
+    <span onClick={toggleForm} className="text-yellow-500 cursor-pointer underline">
+      {isSignup ? 'Login' : 'Sign up'}
+    </span>
+  </p>
+
+  {!isSignup && (
+    <p className="text-black mt-2">
+      Are you an admin?{' '}
+      <a href="/admin-login" className="text-yellow-500 underline">
+        Admin Login
+      </a>
+    </p>
+  )}
+</div>
+
       </div>
     </div>
   );
