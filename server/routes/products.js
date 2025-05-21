@@ -1,28 +1,41 @@
 const express = require('express');
 const router = express.Router();
+const multer = require('multer');
+const path = require('path');
 const Product = require('../models/Product');
 
-// Add product
-router.post("/", async (req, res) => {
+// Set up multer for file storage
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'uploads/'); // folder to save uploaded images
+  },
+  filename: function (req, file, cb) {
+    const ext = path.extname(file.originalname);
+    const uniqueName = `${Date.now()}-${Math.round(Math.random() * 1E9)}${ext}`;
+    cb(null, uniqueName);
+  }
+});
+const upload = multer({ storage });
+
+// POST route with file upload
+router.post('/products', upload.single('image'), async (req, res) => {
   try {
-    const { name, description, price, stock, category, imageUrl } = req.body;
-    
-    if (!imageUrl) {
-      return res.status(400).json({ error: "Image URL is required" });
-    }
+    const imageUrl = `/uploads/${req.file.filename}`; // file path to store in DB
 
     const product = new Product({
-      name,
-      description,
-      price: parseFloat(price),
-      stock: parseInt(stock),
-      category,
-      imageUrl
+      name: req.body.name,
+      description: req.body.description,
+      price: req.body.price,
+      category: req.body.category,
+      stock: req.body.stock || 0,
+      imageUrl,
     });
 
-    const savedProduct = await product.save();
-    res.status(201).json(savedProduct);
+    const saved = await product.save();
+    console.log('Product submitted with imageUrl:', imageUrl);
+    res.status(201).json(saved);
   } catch (error) {
+    console.error('Upload error:', error);
     res.status(400).json({ error: error.message });
   }
 });

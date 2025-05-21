@@ -9,8 +9,6 @@ require("dotenv").config();
 // Setup uploads directory
 const uploadDir = path.join(__dirname, "..", "uploads");
 
-
-
 // Ensure uploads folder exists
 const fs = require("fs");
 if (!fs.existsSync(uploadDir)) {
@@ -46,12 +44,12 @@ const transporter = nodemailer.createTransport({
     pass: process.env.EMAIL_PASS,
   },
 });
-// Submit dealership request with file upload
+
+// ✅ Submit dealership request
 router.post("/submit", upload.single("businessLicense"), async (req, res) => {
   try {
     const { name, email, phone, companyName, address, location } = req.body;
     const filePath = req.file ? req.file.filename : "";
-
 
     const newRequest = new DealershipRequest({
       name,
@@ -61,6 +59,7 @@ router.post("/submit", upload.single("businessLicense"), async (req, res) => {
       address,
       location,
       businessLicense: filePath,
+      replied: false,
     });
 
     await newRequest.save();
@@ -93,7 +92,7 @@ router.post("/submit", upload.single("businessLicense"), async (req, res) => {
   }
 });
 
-// Get all dealership requests
+// ✅ Get all dealership requests
 router.get("/all", async (req, res) => {
   try {
     const requests = await DealershipRequest.find().sort({ createdAt: -1 });
@@ -104,7 +103,7 @@ router.get("/all", async (req, res) => {
   }
 });
 
-// Admin sends reply email
+// ✅ Admin sends reply and updates DB
 router.post("/reply", async (req, res) => {
   try {
     const { email, subject, message } = req.body;
@@ -117,6 +116,17 @@ router.post("/reply", async (req, res) => {
     };
 
     await transporter.sendMail(mailOptions);
+
+    await DealershipRequest.findOneAndUpdate(
+      { email },
+      {
+        $set: {
+          replied: true,
+          replyMessage: message,
+          replyDate: new Date(),
+        },
+      }
+    );
 
     res.status(200).json({ message: "Reply sent successfully" });
   } catch (err) {
