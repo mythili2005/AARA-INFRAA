@@ -9,7 +9,9 @@ const contactRoutes = require('./routes/contact');
 const authRoutes = require('./routes/auth');
 const dealershipRoutes = require("./routes/dealership");
 const productsRoutes = require("./routes/products");
-const fs = require('fs');
+const uploadRoutes = require('./routes/adminRoutes');
+const adminRoutes = require('./routes/adminLogin');
+
 
 const app = express();
 
@@ -18,14 +20,6 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-
-app.get('/list-uploads', (req, res) => {
-  const uploadFolder = path.join(__dirname, 'uploads');
-  fs.readdir(uploadFolder, (err, files) => {
-    if (err) return res.status(500).json({ error: 'Unable to list files' });
-    res.json(files);
-  });
-});
 
 
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
@@ -38,6 +32,8 @@ app.use('/api/contact', contactRoutes);
 app.use('/api/auth', authRoutes); // Auth routes
 app.use("/api/dealership", dealershipRoutes);
 app.use("/api/products", productsRoutes);
+app.use('/api/admin', uploadRoutes);
+app.use('/api/admin', adminRoutes);
 
 let otpStore = {};  // Temporary store for OTPs (you can use a DB in production)
 

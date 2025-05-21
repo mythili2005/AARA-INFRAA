@@ -25,13 +25,13 @@ export default function AddProductForm() {
 
     setPreview(URL.createObjectURL(file));
     const data = new FormData();
-    data.append("productImage", file);
+    data.append("image", file);
 
     try {
       setUploading(true);
-      const res =await axios.post("/admin/products/upload-image", data,{
-        headers: { "Content-Type": "multipart/form-data" },
-      });
+      const res = await axios.post("/api/admin/uploads", data, {
+  headers: { "Content-Type": "multipart/form-data" },
+});
       setImageUrl(res.data.imageUrl);
       setMessage({ type: "success", text: "Image uploaded successfully." });
     } catch (err) {
@@ -54,7 +54,7 @@ export default function AddProductForm() {
     }
 
     try {
-      await axios.post("/admin/products", {
+      await axios.post("/api/products", {
         ...form,
         price: parseFloat(form.price),
         stock: parseInt(form.stock, 10),

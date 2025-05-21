@@ -3,21 +3,32 @@ const router = express.Router();
 const Product = require('../models/Product');
 
 // Add product
-router.post('/products', async (req, res) => {
+router.post("/", async (req, res) => {
   try {
-    const product = new Product(req.body);
-    const saved = await product.save();
-    console.log('Submitting product with imageUrl:', imageUrl);
-    res.status(201).json(saved);
+    const { name, description, price, stock, category, imageUrl } = req.body;
+    
+    if (!imageUrl) {
+      return res.status(400).json({ error: "Image URL is required" });
+    }
+
+    const product = new Product({
+      name,
+      description,
+      price: parseFloat(price),
+      stock: parseInt(stock),
+      category,
+      imageUrl
+    });
+
+    const savedProduct = await product.save();
+    res.status(201).json(savedProduct);
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
 });
 
-
-
-// Get all products
-router.get('/products', async (req, res) => {
+// Get All Products
+router.get("/", async (req, res) => {
   try {
     const products = await Product.find().sort({ createdAt: -1 });
     res.json(products);
