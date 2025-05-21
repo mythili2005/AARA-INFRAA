@@ -19,7 +19,8 @@ const AuthPage = () => {
   const [message, setMessage] = useState('');
   const navigate = useNavigate();
 
-  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?#&])[A-Za-z\d@$!%*?#&]{8,}$/;
+  const passwordRegex =
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?#&])[A-Za-z\d@$!%*?#&]{8,}$/;
 
   const toggleForm = () => {
     setIsSignup((prev) => !prev);
@@ -49,7 +50,7 @@ const AuthPage = () => {
 
       if (!passwordRegex.test(formData.password)) {
         setMessage(
-          "Password must be at least 8 characters and include uppercase, lowercase, number, and special character."
+          'Password must be at least 8 characters and include uppercase, lowercase, number, and special character.'
         );
         return;
       }
@@ -150,6 +151,16 @@ const AuthPage = () => {
           placeholder="Password"
           className="px-6 py-3 border-[2px] border-black text-black rounded-lg w-full"
         />
+
+        {/* Forgot Password Link */}
+        {!isSignup && !isOTPStage && (
+          <div className="text-right mt-1">
+            <a href="/forgot-password" className="text-yellow-500 hover:underline text-sm">
+              Forgot Password?
+            </a>
+          </div>
+        )}
+
         {isSignup && formData.password && !passwordRegex.test(formData.password) && (
           <p className="text-red-500 text-sm">
             Password must have 8+ characters, uppercase, lowercase, number, and special character.
@@ -215,26 +226,25 @@ const AuthPage = () => {
         )}
 
         <div className="mt-4 text-center">
-  <p className="text-black">
-    {isSignup ? 'Already have an account?' : "Don't have an account?"}{' '}
-    <span onClick={toggleForm} className="text-yellow-500 cursor-pointer underline">
-      {isSignup ? 'Login' : 'Sign up'}
-    </span>
-  </p>
+          <p className="text-black">
+            {isSignup ? 'Already have an account?' : "Don't have an account?"}{' '}
+            <span onClick={toggleForm} className="text-yellow-500 cursor-pointer underline">
+              {isSignup ? 'Login' : 'Sign up'}
+            </span>
+          </p>
 
-  {!isSignup && (
-    <p className="text-black mt-2">
-      Are you an admin?{' '}
-      <a href="/admin-login" className="text-yellow-500 underline">
-        Admin Login
-      </a>
-    </p>
-  )}
-</div>
-
+          {!isSignup && (
+            <p className="text-black mt-2">
+              Are you an admin?{' '}
+              <a href="/admin-login" className="text-yellow-500 underline">
+                Admin Login
+              </a>
+            </p>
+          )}
+        </div>
       </div>
     </div>
   );
 };
 
-export default AuthPage;  
+export default AuthPage;

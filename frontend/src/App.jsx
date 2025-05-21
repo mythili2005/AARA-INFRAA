@@ -17,7 +17,9 @@ import AdminDashboard from './section/AdminDashboard';
 import AdminDealerships from './section/AdminDealerships';
 import AdminContacts from './section/AdminContact';
 import AdminProducts from './section/AdminProducts';
-import ProductDetails from './section/ProductDetails'; 
+import ProductDetails from './section/ProductDetails';
+import ForgotPassword from './section/ForgotPassword';
+import ResetPassword from './section/ResetPassword'; 
 
 const App = () => {
   return (
@@ -41,7 +43,8 @@ const App = () => {
         <Route path="/admin-contacts" element={<AdminContacts />} />
         <Route path="/admin-products" element={<AdminProducts />} />
         <Route path="/product/:id" element={<ProductDetails />} />
-
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
       </Routes>
       <Footer />
     </Router>

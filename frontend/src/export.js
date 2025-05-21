@@ -15,68 +15,68 @@ import client2 from "../src/assets/client2.png";
 import client3 from "../src/assets/client3.png";
 
 export const allservices = [
-  {
+   {
     icon: building,
-    title: "BUILDING RENOVATION",
+    title: "Structural Renovation",
     about:
-      "Sample text. Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+      "We revamp and reinforce existing public and commercial structures, including water purifier enclosures, using quality materials.",
   },
   {
     icon: construction,
-    title: "CONSTRUCTION SERVICES",
+    title: "Sliding Window Installation",
     about:
-      "Sample text. Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+      "Expert fabrication and fitting of aluminum and UPVC sliding windows that ensure safety, airflow, and modern aesthetics.",
   },
   {
     icon: design,
-    title: "DESIGN & PLANNING",
+    title: "Architectural Design & Planning",
     about:
-      "Sample text. Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+      "Custom layout planning and visualization using modern tools to match the site’s purpose, space, and visual harmony.",
   },
   {
     icon: document,
-    title: "DOCUMENTATION",
+    title: "Official Documentation Support",
     about:
-      "Sample text. Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+      "We assist in creating and managing essential documentation such as work quotes, layout drafts, and licensing paperwork.",
   },
   {
     icon: paint,
-    title: "INTERIOR DESIGN",
+    title: "Interior & Exterior Finishing",
     about:
-      "Sample text. Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+      "We provide detailed finishing services including paint, sealing, and protective coating to elevate the final look of each project.",
   },
   {
     icon: support,
-    title: "CUSTOMER SUPPORT",
+    title: "24x7 Customer Support",
     about:
-      "Sample text. Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+      "Dedicated support team ready to handle queries, project updates, and after-installation maintenance across all services.",
   },
 ];
 
 export const planning = [
   {
     icon: IoDocumentTextSharp,
-    title: "planning",
+    title: "Planning & Documentation",
     about:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas gravida cursus",
+      "We analyze project requirements, provide on-site assessment, handle all necessary documentation like project proposals and paperwork.",
   },
   {
     icon: MdOutlineDesignServices,
-    title: "design",
+    title: "Custom Design Solutions",
     about:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas gravida cursus",
+      "Tailored infrastructure and layout designs using modern techniques and materials like UPVC, aluminum, and MS for long-lasting solutions.",
   },
   {
     icon: FaRegBuilding,
-    title: "building",
+    title: "Building & Framing",
     about:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas gravida cursus",
+      "Expert construction of structural frames, protective enclosures, and sliding windows around public utilities and commercial properties.",
   },
   {
     icon: FaSitemap,
-    title: "finish",
+    title: "Final Finishing & Setup",
     about:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas gravida cursus",
+      "We handle complete finishing — from painting and sealing to secure installations — ensuring projects are ready for safe, aesthetic public use.",
   },
 ];
 
@@ -85,21 +85,21 @@ export const clients = [
     image: client1,
     name: "Alex Parker",
     about:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas gravida cursus",
-    post: "Constructor",
+      "AARA INFRAA delivered exactly what we needed. Their attention to detail during the installation of safety enclosures was impressive.",
+    post: "Project Supervisor",
   },
   {
     image: client2,
     name: "Drew James",
     about:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas gravida cursus",
-    post: "Architect",
+      "Their team helped us with custom design solutions and high-quality materials. We are extremely satisfied with their professionalism.",
+    post: "Site Architect",
   },
   {
     image: client3,
     name: "Sam Peterson",
     about:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas gravida cursus",
-    post: "Builder",
+      "Excellent service and on-time completion! The team ensured safety and durability for our public purifier frame installations. Great job overall!",
+    post: "Construction Lead",
   },
 ];

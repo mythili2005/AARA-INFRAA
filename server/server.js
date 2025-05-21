@@ -85,6 +85,7 @@ app.post('/api/otp', async (req, res) => {
   return res.status(200).json({ message: 'OTP sent successfully' });
 });
 
+
 // Route for verifying OTP
 app.post('/api/verify-otp', (req, res) => {
   const { email, otp } = req.body;
