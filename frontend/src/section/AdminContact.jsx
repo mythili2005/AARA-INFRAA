@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { slideUpVariants } from './animation';
 
+const BASE_URL = 'http://localhost:5000'; // <-- Make sure to change this if needed
 
 const AdminContact = () => {
   const [contacts, setContacts] = useState([]);
@@ -10,15 +11,22 @@ const AdminContact = () => {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState({ type: '', text: '' });
 
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filterStatus, setFilterStatus] = useState('all');
+
   useEffect(() => {
     fetchContacts();
   }, []);
 
   const fetchContacts = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/contact');
+      const res = await fetch(`${BASE_URL}/api/contact`);
       const data = await res.json();
-      setContacts(data);
+      if (Array.isArray(data)) {
+        setContacts(data);
+      } else {
+        setMessage({ type: 'error', text: 'Invalid response from server.' });
+      }
     } catch (error) {
       console.error('Error fetching contacts:', error);
       setMessage({ type: 'error', text: 'Failed to load contact messages.' });
@@ -34,7 +42,7 @@ const AdminContact = () => {
     }
 
     setLoading(true);
-    setMessage({ type: '', text: '' }); // clear previous messages
+    setMessage({ type: '', text: '' });
 
     try {
       const res = await fetch(`${BASE_URL}/api/contact/reply/${id}`, {
@@ -58,6 +66,18 @@ const AdminContact = () => {
     setLoading(false);
   };
 
+  const filteredContacts = contacts.filter((contact) => {
+    const nameMatch = contact.fullname.toLowerCase().includes(searchTerm.toLowerCase());
+    const emailMatch = contact.email.toLowerCase().includes(searchTerm.toLowerCase());
+
+    const matchesSearch = nameMatch || emailMatch;
+
+    if (filterStatus === 'replied') return contact.replied && matchesSearch;
+    if (filterStatus === 'unreplied') return !contact.replied && matchesSearch;
+
+    return matchesSearch;
+  });
+
   return (
     <div className="bg-white w-full min-h-screen p-[60px]">
       <div className="lg:w-[80%] w-[90%] m-auto">
@@ -72,6 +92,27 @@ const AdminContact = () => {
           <div className="w-[120px] h-[6px] bg-yellow-500 mb-8"></div>
         </motion.div>
 
+        {/* Search & Filter */}
+        <div className="flex flex-col md:flex-row md:items-center gap-4 mb-6">
+          <input
+            type="text"
+            placeholder="Search by name or email..."
+            className="border border-black px-4 py-2 rounded-lg w-full md:w-[300px]"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+
+          <select
+            className="border border-black px-4 py-2 rounded-lg w-full md:w-[200px]"
+            value={filterStatus}
+            onChange={(e) => setFilterStatus(e.target.value)}
+          >
+            <option value="all">All</option>
+            <option value="replied">Replied</option>
+            <option value="unreplied">Unreplied</option>
+          </select>
+        </div>
+
         {message.text && (
           <div
             className={`mb-6 text-center ${
@@ -83,7 +124,7 @@ const AdminContact = () => {
           </div>
         )}
 
-        {contacts.length === 0 ? (
+        {filteredContacts.length === 0 ? (
           <p className="text-xl text-gray-600">No contact messages found.</p>
         ) : (
           <div className="overflow-x-auto">
@@ -99,8 +140,11 @@ const AdminContact = () => {
                 </tr>
               </thead>
               <tbody>
-                {contacts.map((contact) => (
-                  <tr key={contact._id} className="border-b-[2px] border-black">
+                {filteredContacts.map((contact) => (
+                  <tr
+                    key={contact._id}
+                    className="border-b-[2px] border-black hover:bg-gray-100"
+                  >
                     <td className="p-3">{contact.fullname}</td>
                     <td className="p-3">{contact.email}</td>
                     <td className="p-3">{contact.mobile}</td>
