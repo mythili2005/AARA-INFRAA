@@ -40,6 +40,32 @@ router.post('/products', upload.single('image'), async (req, res) => {
   }
 });
 
+// Add product (without upload, expects imageUrl in body)
+router.post("/", async (req, res) => {
+  try {
+    const { name, description, price, stock, category, imageUrl } = req.body;
+    
+    if (!imageUrl) {
+      return res.status(400).json({ error: "Image URL is required" });
+    }
+
+    const product = new Product({
+      name,
+      description,
+      price: parseFloat(price),
+      stock: parseInt(stock),
+      category,
+      imageUrl
+    });
+
+    const savedProduct = await product.save();
+    res.status(201).json(savedProduct);
+  } catch (error) {
+    console.error('Upload error:', error);
+    res.status(400).json({ error: error.message });
+  }
+});
+
 // Get All Products
 router.get("/", async (req, res) => {
   try {
