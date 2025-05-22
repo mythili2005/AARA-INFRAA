@@ -16,12 +16,24 @@ const Header = () => {
     setIsMenuOpen(false);
   };
 
-  useEffect(() => {
+
+useEffect(() => {
+  const safeParse = (key) => {
+    try {
+      const value = localStorage.getItem(key);
+      return value ? JSON.parse(value) : null;
+    } catch (err) {
+      console.error(`Error parsing ${key}:`, err);
+      return null;
+    }
+  };
+
+  setUser(safeParse('user'));
+  setAdmin(safeParse('admin'));
+
   const onStorageChange = () => {
-    const storedUser = localStorage.getItem('user');
-    setUser(storedUser ? JSON.parse(storedUser) : null);
-    const storedAdmin = localStorage.getItem('admin');
-    setAdmin(storedAdmin ? JSON.parse(storedAdmin) : null);
+    setUser(safeParse('user'));
+    setAdmin(safeParse('admin'));
   };
 
   window.addEventListener('storage', onStorageChange);

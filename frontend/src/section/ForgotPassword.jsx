@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
+import { slideUpVariants, zoomInVariants } from './animation';
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState('');
@@ -22,33 +24,56 @@ const ForgotPassword = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-50">
-      <div className="w-full max-w-md p-8 space-y-8 bg-white rounded-lg shadow-md">
-        <h2 className="text-2xl font-bold text-center">Forgot Password</h2>
-        
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Enter your email"
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500"
-              required
-            />
-          </div>
+    <div id="auth" className="bg-white w-full">
+      <div className="lg:w-[50%] w-[90%] m-auto py-[60px] flex flex-col items-center">
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          variants={slideUpVariants}
+          className="w-full flex flex-col justify-center items-center gap-6"
+        >
+          <motion.h1 variants={slideUpVariants} className="text-yellow-500 text-2xl">
+            PASSWORD RECOVERY
+          </motion.h1>
+          <motion.h1
+            variants={slideUpVariants}
+            className="text-black uppercase text-[40px] font-bold text-center"
+          >
+            Reset Your Password
+          </motion.h1>
+          <div className="w-[120px] h-[6px] bg-yellow-500"></div>
+        </motion.div>
+
+        <motion.form
+          initial="hidden"
+          whileInView="visible"
+          variants={zoomInVariants}
+          onSubmit={handleSubmit}
+          className="mt-8 w-full flex flex-col gap-4 max-w-md"
+        >
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="Enter your email"
+            className="px-6 py-3 border-[2px] border-black text-black rounded-lg w-full"
+            required
+          />
           
-          <button
+          <motion.button
+            variants={zoomInVariants}
             type="submit"
             disabled={isLoading}
-            className={`w-full px-4 py-2 text-white bg-yellow-500 rounded-md hover:bg-yellow-600 transition ${isLoading ? 'opacity-70 cursor-not-allowed' : ''}`}
+            className={`bg-yellow-500 hover:bg-black hover:text-white px-10 py-4 text-black font-bold rounded-lg w-full ${
+              isLoading ? 'opacity-70 cursor-not-allowed' : ''
+            }`}
           >
             {isLoading ? 'Sending...' : 'Send Reset Link'}
-          </button>
-        </form>
+          </motion.button>
+        </motion.form>
 
         {message && (
-          <div className={`p-3 rounded-md text-center ${
+          <div className={`mt-4 p-3 rounded-md text-center w-full max-w-md ${
             message.toLowerCase().includes('success') 
               ? 'bg-green-100 text-green-700' 
               : 'bg-red-100 text-red-700'
@@ -57,10 +82,10 @@ const ForgotPassword = () => {
           </div>
         )}
 
-        <div className="text-center">
+        <div className="mt-8 text-center">
           <button 
             onClick={() => navigate('/auth')} 
-            className="text-yellow-600 hover:underline"
+            className="text-yellow-500 underline hover:text-black"
           >
             Back to Login
           </button>
